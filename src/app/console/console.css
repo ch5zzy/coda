@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.console {
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 1.1em;
+    padding: 10px;
+}

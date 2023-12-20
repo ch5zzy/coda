@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.toolbar {
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 1.1em;
+    background-color: deeppink;
+    padding: 5px;
+}
