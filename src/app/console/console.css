@@ -4,12 +4,29 @@
 
 .console {
     box-sizing: border-box;
-    flex: 1;
-    font-family: monospace;
-    font-size: 1.1em;
     padding: 10px;
     background-color: black;
     color: white;
-    max-height: calc(40vh - 50px);
     overflow-y: scroll;
+    font-family: monospace;
+    font-size: 1.1em;
+    white-space: pre;
+    padding-bottom: 30px;
+}
+
+.prompt {
+    display: inline-block;
+}
+
+.user-input {
+    font-family: monospace;
+    background-color: inherit;
+    color: inherit;
+    display: inline-block;
+    width: 95%;
+}
+
+.user-input:focus {
+    appearance: none;
+    outline: none;
 }

@@ -25,3 +25,11 @@
 .toolbar-button:hover {
     background-color: white;
 }
+
+.toolbar-button.disabled {
+    opacity: 0.5;
+}
+
+.toolbar-button.disabled:hover {
+    background-color: pink;
+}
