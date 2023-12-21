@@ -4,9 +4,12 @@
 
 .console {
     box-sizing: border-box;
+    flex: 1;
     font-family: monospace;
     font-size: 1.1em;
     padding: 10px;
     background-color: black;
     color: white;
+    max-height: calc(40vh - 50px);
+    overflow-y: scroll;
 }

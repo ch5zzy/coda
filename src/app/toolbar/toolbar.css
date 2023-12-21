@@ -3,9 +3,25 @@
 @tailwind utilities;
 
 .toolbar {
+    display: flex;
     box-sizing: border-box;
+    height: 50px;
     font-family: monospace;
     font-size: 1.1em;
     background-color: deeppink;
-    padding: 5px;
+    color: black;
+    justify-content: left;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.toolbar-button {
+    background-color: pink;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.toolbar-button:hover {
+    background-color: white;
 }
