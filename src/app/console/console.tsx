@@ -5,6 +5,7 @@ export default function Console(props: {
     text: string,
     allowInput: boolean,
     prompt: string,
+    promptColor: string,
     height: string,
     onEnter: (s: string) => void
 }) {
@@ -22,14 +23,15 @@ export default function Console(props: {
             {props.text}
             {props.allowInput &&
                 <div>
-                    <div className="prompt">{props.prompt}</div>
+                    <div className="prompt" style={{color: props.promptColor}}>{props.prompt}</div>
                     <input
                         value={userText}
                         className="user-input"
                         type="text"
                         onKeyDown={checkEnter}
                         onInput={(e: FormEvent) => setUserText((e.target as HTMLInputElement).value)}
-                        autoFocus={true} />
+                        autoFocus={true}
+                        style={{ color: props.promptColor }} />
                 </div>
             }
         </div>

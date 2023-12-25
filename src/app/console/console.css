@@ -16,6 +16,7 @@
 
 .prompt {
     display: inline-block;
+    white-space: pre;
 }
 
 .user-input {
