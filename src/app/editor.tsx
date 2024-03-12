@@ -5,8 +5,10 @@ import CodeMirror from "@uiw/react-codemirror";
 import Console from "./console/console";
 import Toolbar from "./toolbar/toolbar";
 import { python } from "@codemirror/lang-python";
-import { PythonProvider, usePython, usePythonConsole } from "react-py";
+import { usePython, usePythonConsole } from "react-py";
 import { ConsoleState } from "react-py/dist/types/Console";
+import { aura } from "@uiw/codemirror-theme-aura";
+import { xcodeLight } from "@uiw/codemirror-theme-xcode";
 
 interface ReactPy {
     runPython: (code: string, preamble?: string | undefined) => Promise<void>,
@@ -28,6 +30,7 @@ interface ReactPyConsole extends ReactPy {
 
 export default function Editor() {
     const [userCode, setUserCode] = useState("print(\"Hello world!\")");
+    const [darkMode, setDarkMode] = useState(true);
 
     const [showConsole, setShowConsole] = useState(true);
     const [showShell, setShowShell] = useState(false);
@@ -203,14 +206,24 @@ export default function Editor() {
                 height={showConsole ? (showShell ? "0" : "60vh") : "calc(100vh - 50px)"}
                 value={userCode}
                 extensions={[python()]}
-                theme="dark"
-                onChange={setUserCode} />
+                theme={darkMode ? aura : xcodeLight}
+                onChange={setUserCode}
+                basicSetup={{
+                    searchKeymap: true,
+                    bracketMatching: true,
+                    foldKeymap: true,
+                    foldGutter: true,
+                    tabSize: 4,
+                    autocompletion: true,
+                    highlightActiveLine: true
+                }} />
             <Toolbar
                 isReady={interpreter.isReady}
                 runFn={(!showShell && !interpreter.isRunning) ? runCode : undefined}
                 stopFn={(!showShell && interpreter.isRunning) ? stopCode : (showShell && shell.isRunning) ? stopShell : undefined}
                 toggleConsoleFn={!showShell ? () => setShowConsole(!showConsole) : undefined}
                 toggleInteractiveShellFn={(!interpreter.isRunning && shell.isReady) ? toggleInteractiveShell : undefined}
+                toggleDarkModeFn={() => setDarkMode(!darkMode)}
                 uploadFn={() => uploadRef.current?.click()}
                 downloadFn={downloadCode} />
             {showConsole &&

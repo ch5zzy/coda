@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react"
-import { FaTerminal, FaPlay, FaDownload, FaFileImport, FaHandSparkles, FaStop } from "react-icons/fa";
+import { FaTerminal, FaPlay, FaDownload, FaFileImport, FaHandSparkles, FaStop, FaMoon } from "react-icons/fa";
 import ToolbarButton from "./button";
 import "./toolbar.css";
 
@@ -10,7 +10,8 @@ export default function Toolbar(props: {
     toggleConsoleFn?: MouseEventHandler,
     uploadFn?: MouseEventHandler,
     downloadFn?: MouseEventHandler,
-    toggleInteractiveShellFn?: MouseEventHandler
+    toggleInteractiveShellFn?: MouseEventHandler,
+    toggleDarkModeFn?: MouseEventHandler
 }) {
     return (
         <div className="toolbar">
@@ -18,6 +19,7 @@ export default function Toolbar(props: {
                 <div>
                     <ToolbarButton onClick={props.toggleConsoleFn} label="Toggle console"><FaTerminal /></ToolbarButton>
                     <ToolbarButton onClick={props.toggleInteractiveShellFn} label="Toggle interactive shell"><FaHandSparkles /></ToolbarButton>
+                    <ToolbarButton onClick={props.toggleDarkModeFn} label="Toggle dark mode"><FaMoon /></ToolbarButton>
                     <ToolbarButton onClick={props.runFn} label="Run"><FaPlay /></ToolbarButton>
                     <ToolbarButton onClick={props.stopFn} label="Stop"><FaStop /></ToolbarButton>
                     <ToolbarButton onClick={props.uploadFn} label="Import"><FaFileImport /></ToolbarButton>
