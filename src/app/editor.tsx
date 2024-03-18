@@ -30,7 +30,7 @@ interface ReactPyConsole extends ReactPy {
 
 export default function Editor() {
     const [userCode, setUserCode] = useState("print(\"Hello world!\")");
-    const [darkMode, setDarkMode] = useState<boolean>(JSON.parse(localStorage.getItem("dark") ?? "false"));
+    const [darkMode, setDarkMode] = useState<boolean | undefined>(undefined);
 
     const [showConsole, setShowConsole] = useState(true);
     const [showShell, setShowShell] = useState(false);
@@ -52,6 +52,9 @@ export default function Editor() {
      * be updated manually.
      */
     useEffect(() => {
+        // Check if dark mode should be enabled.
+        setDarkMode(JSON.parse(localStorage.getItem("dark") ?? "false"));
+
         navigator.serviceWorker
             .register("/react-py-sw.js")
             .then((registration) =>
@@ -67,7 +70,7 @@ export default function Editor() {
      * Store dark mode setting in local storage.
      */
     useEffect(() => {
-        localStorage.setItem("dark", JSON.stringify(darkMode));
+        if (darkMode !== undefined) localStorage.setItem("dark", JSON.stringify(darkMode));
     }, [darkMode]);
 
     /**
@@ -206,7 +209,7 @@ export default function Editor() {
         }
     }
 
-    return (
+    return darkMode !== undefined ? (
         <div>
             <CodeMirror
                 className="editor"
@@ -247,5 +250,5 @@ export default function Editor() {
             }
             <input ref={uploadRef} type="file" onChange={uploadCode} hidden></input>
         </div>
-    );
+    ) : <div></div>;
 }
