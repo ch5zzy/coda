@@ -9,6 +9,7 @@ import { usePython, usePythonConsole } from "react-py";
 import { ConsoleState } from "react-py/dist/types/Console";
 import { aura } from "@uiw/codemirror-theme-aura";
 import { xcodeLight } from "@uiw/codemirror-theme-xcode";
+import Image from "next/image";
 
 interface ReactPy {
     runPython: (code: string, preamble?: string | undefined) => Promise<void>,
@@ -209,7 +210,7 @@ export default function Editor() {
         }
     }
 
-    return darkMode !== undefined ? (
+    return (darkMode !== undefined) ? (
         <div>
             <CodeMirror
                 className="editor"
@@ -250,5 +251,5 @@ export default function Editor() {
             }
             <input ref={uploadRef} type="file" onChange={uploadCode} hidden></input>
         </div>
-    ) : <div></div>;
+    ) : <div className="center"><Image src="/heart.svg" alt="Coda" width={100} height={100} />&nbsp;Coda</div>;
 }
