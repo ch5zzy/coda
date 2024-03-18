@@ -30,11 +30,11 @@ interface ReactPyConsole extends ReactPy {
 
 export default function Editor() {
     const [userCode, setUserCode] = useState("print(\"Hello world!\")");
-    const [darkMode, setDarkMode] = useState(true);
+    const [darkMode, setDarkMode] = useState<boolean>(JSON.parse(localStorage.getItem("dark") ?? "false"));
 
     const [showConsole, setShowConsole] = useState(true);
     const [showShell, setShowShell] = useState(false);
-    const [prompt, setPrompt] = useState("coda$ ")
+    const [prompt, setPrompt] = useState("")
     const [shellOutput, setShellOutput] = useState("");
 
     const usePythonProps = {
@@ -60,8 +60,15 @@ export default function Editor() {
                     registration.scope
                 )
             )
-            .catch((err) => console.log("Service Worker registration failed: ", err))
+            .catch((err) => console.log("Service Worker registration failed: ", err));
     }, []);
+
+    /**
+     * Store dark mode setting in local storage.
+     */
+    useEffect(() => {
+        localStorage.setItem("dark", JSON.stringify(darkMode));
+    }, [darkMode]);
 
     /**
      * Add the banner to the shell output.
@@ -225,7 +232,8 @@ export default function Editor() {
                 toggleInteractiveShellFn={(!interpreter.isRunning && shell.isReady) ? toggleInteractiveShell : undefined}
                 toggleDarkModeFn={() => setDarkMode(!darkMode)}
                 uploadFn={() => uploadRef.current?.click()}
-                downloadFn={downloadCode} />
+                downloadFn={downloadCode}
+                darkMode={darkMode} />
             {showConsole &&
                 <Console
                     text={showShell ?
@@ -234,7 +242,8 @@ export default function Editor() {
                     prompt={prompt}
                     promptColor={(interpreter.isAwaitingInput || shell.isAwaitingInput) ? "yellow" : "white"}
                     onEnter={handleConsoleEnter}
-                    height={showShell ? "calc(100vh - 50px)" : "calc(40vh - 50px)"} />
+                    height={showShell ? "calc(100vh - 50px)" : "calc(40vh - 50px)"}
+                    darkMode={darkMode} />
             }
             <input ref={uploadRef} type="file" onChange={uploadCode} hidden></input>
         </div>

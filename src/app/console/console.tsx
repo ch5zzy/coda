@@ -7,6 +7,7 @@ export default function Console(props: {
     prompt: string,
     promptColor: string,
     height: string,
+    darkMode?: boolean,
     onEnter: (s: string) => void
 }) {
     const [userText, setUserText] = useState("");
@@ -19,11 +20,11 @@ export default function Console(props: {
     }
 
     return (
-        <div className="console" style={{ height: props.height }}>
+        <div className={props.darkMode == true ? "console dark" : "console"} style={{ height: props.height }}>
             {props.text}
             {props.allowInput &&
                 <div>
-                    <div className="prompt" style={{color: props.promptColor}}>{props.prompt}</div>
+                    <div className="prompt" style={{ color: props.promptColor }}>{props.prompt}</div>
                     <input
                         value={userText}
                         className="user-input"

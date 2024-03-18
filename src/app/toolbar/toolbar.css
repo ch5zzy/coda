@@ -8,28 +8,42 @@
     height: 50px;
     font-family: monospace;
     font-size: 1.1em;
-    background-color: deeppink;
+    background-color: pink;
     color: black;
     justify-content: left;
     align-items: center;
     padding-left: 10px;
 }
 
-.toolbar-button {
-    background-color: pink;
-    padding: 10px;
-    margin-right: 10px;
-    border-radius: 10px;
+.toolbar.dark {
+    background-color: cyan;
 }
 
-.toolbar-button:hover {
-    background-color: white;
+.toolbar-button {
+    outline: 1px solid black;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 100%;
+}
+
+.toolbar-button:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .toolbar-button.disabled {
     opacity: 0.5;
 }
 
-.toolbar-button.disabled:hover {
-    background-color: pink;
+.spinner {
+    animation: rotation 1.5s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
 }

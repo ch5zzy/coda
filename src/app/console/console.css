@@ -5,13 +5,18 @@
 .console {
     box-sizing: border-box;
     padding: 10px;
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
     overflow-y: scroll;
     font-family: monospace;
     font-size: 1.1em;
     white-space: pre;
     padding-bottom: 30px;
+}
+
+.console.dark {
+    background-color: black;
+    color: white;
 }
 
 .prompt {
