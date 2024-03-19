@@ -121,7 +121,7 @@ export default function Editor() {
     useEffect(() => {
         // Open a popup window if the result is an image.
         if (interpreter.stdout.startsWith("data:image")) {
-            const img = new Image();
+            const img = new window.Image();
             img.src = interpreter.stdout;
             img.onload = () => {
                 const imgWindow = window.open("", "Image", `popup,width=${img.width},height=${img.height}`);
