@@ -10,6 +10,8 @@ import { ConsoleState } from "react-py/dist/types/Console";
 import { aura } from "@uiw/codemirror-theme-aura";
 import { xcodeLight } from "@uiw/codemirror-theme-xcode";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface ReactPy {
     runPython: (code: string, preamble?: string | undefined) => Promise<void>,
@@ -30,8 +32,13 @@ interface ReactPyConsole extends ReactPy {
 };
 
 export default function Editor() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
     const [userCode, setUserCode] = useState("print(\"Hello world!\")");
     const [darkMode, setDarkMode] = useState<boolean | undefined>(undefined);
+    const [toolbarText, setToolbarText] = useState<string>("");
+    const [cloudSaveInProgress, setCloudSaveInProgress] = useState<boolean>(false);
 
     const [showConsole, setShowConsole] = useState(true);
     const [showShell, setShowShell] = useState(false);
@@ -65,7 +72,39 @@ export default function Editor() {
                 )
             )
             .catch((err) => console.log("Service Worker registration failed: ", err));
-    }, []);
+
+        // Load a cloud save if an ID is present.
+        const saveId = searchParams.get("id");
+        if (saveId) {
+            fetch(`https://jsonblob.com/api/jsonBlob/${saveId}`)
+                .then(response => response.json()
+                    .then((config: CloudSave) => {
+                        if (config._codaTag === "*") {
+                            setUserCode(config.content);
+                            const saveDate = new Date(config.lastSaved).toLocaleString();
+                            setToolbarText("Last saved " + saveDate);
+                        } else {
+                            setToolbarText("Failed to load cloud save");
+                        }
+                    })
+                )
+                .catch(() => {
+                    setToolbarText("Failed to load cloud save");
+                })
+        }
+
+        // Save when CTRL+S is pressed.
+        const handleCtrlS = (event: KeyboardEvent) => {
+            const code = event.key;
+
+            if ((event.ctrlKey || event.metaKey) && code === 's') {
+                event.preventDefault();
+                saveCodeToCloud();
+            }
+        };
+
+        window.addEventListener("keydown", handleCtrlS);
+    }, [searchParams]);
 
     /**
      * Store dark mode setting in local storage.
@@ -164,6 +203,39 @@ export default function Editor() {
     }
 
     /**
+     * Saves the current code to the cloud. Expires after 30 days of creation.
+     */
+    async function saveCodeToCloud() {
+        setCloudSaveInProgress(true);
+
+        const config: CloudSave = {
+            content: userCode,
+            lastSaved: Date.now(),
+            version: 1,
+            _codaTag: "*"
+        };
+
+        const currSaveId = searchParams.get("id");
+        const url = `https://jsonblob.com/api/jsonBlob${currSaveId ? "/" + currSaveId : ""}`;
+        const method = currSaveId ? "PUT" : "POST";
+        const response = await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json", "Access-Control-Expose-Headers": "Location" },
+            body: JSON.stringify(config)
+        });
+
+        const saveDate = new Date(config.lastSaved).toLocaleString();
+        if (response.ok) {
+            setToolbarText("Last saved " + saveDate);
+            if (method != "PUT") router.push(`/?id=${await response.headers.get("Location")?.split("/").pop()}`)
+        } else {
+            setToolbarText("Saving failed at " + saveDate);
+        }
+
+        setCloudSaveInProgress(false);
+    }
+
+    /**
      * Runs the user's code.
      */
     async function runCode() {
@@ -237,6 +309,9 @@ export default function Editor() {
                 toggleDarkModeFn={() => setDarkMode(!darkMode)}
                 uploadFn={() => uploadRef.current?.click()}
                 downloadFn={downloadCode}
+                cloudSaveFn={saveCodeToCloud}
+                cloudSaveInProgress={cloudSaveInProgress}
+                endText={toolbarText}
                 darkMode={darkMode} />
             {showConsole &&
                 <Console

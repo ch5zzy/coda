@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react"
-import { FaTerminal, FaPlay, FaDownload, FaFileImport, FaHandSparkles, FaStop, FaMoon, FaSun } from "react-icons/fa";
+import { FaTerminal, FaPlay, FaDownload, FaFileImport, FaHandSparkles, FaStop, FaMoon, FaSun, FaCloudUploadAlt } from "react-icons/fa";
 import { LuLoader2 } from "react-icons/lu";
 import ToolbarButton from "./button";
 import "./toolbar.css";
@@ -13,6 +13,9 @@ export default function Toolbar(props: {
     downloadFn?: MouseEventHandler,
     toggleInteractiveShellFn?: MouseEventHandler,
     toggleDarkModeFn?: MouseEventHandler,
+    cloudSaveFn?: MouseEventHandler,
+    cloudSaveInProgress?: boolean,
+    endText: string,
     darkMode?: boolean
 }) {
     return (
@@ -25,6 +28,8 @@ export default function Toolbar(props: {
                 <ToolbarButton onClick={props.stopFn} label="Stop"><FaStop /></ToolbarButton>
                 <ToolbarButton onClick={props.uploadFn} label="Import"><FaFileImport /></ToolbarButton>
                 <ToolbarButton onClick={props.downloadFn} label="Download"><FaDownload /></ToolbarButton>
+                <ToolbarButton onClick={props.cloudSaveInProgress ? undefined : props.cloudSaveFn} label="Save to Cloud">{props.cloudSaveInProgress ? <LuLoader2 className="spinner" /> : <FaCloudUploadAlt />}</ToolbarButton>
+                <span>{props.endText}</span>
             </div>
         </div>
     )
