@@ -104,7 +104,7 @@ export default function Editor() {
         };
 
         window.addEventListener("keydown", handleCtrlS);
-    }, [searchParams]);
+    }, []);
 
     /**
      * Store dark mode setting in local storage.
