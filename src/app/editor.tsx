@@ -244,7 +244,7 @@ export default function Editor() {
                         shellOutput : interpreter.stdout + interpreter.stderr}
                     allowInput={showShell ? (!shell.isRunning || shell.isAwaitingInput) : interpreter.isAwaitingInput}
                     prompt={prompt}
-                    promptColor={(interpreter.isAwaitingInput || shell.isAwaitingInput) ? "yellow" : "white"}
+                    promptColor={(interpreter.isAwaitingInput || shell.isAwaitingInput) ? (darkMode ? "yellow" : "purple") : (darkMode ? "white" : "black")}
                     onEnter={handleConsoleEnter}
                     height={showShell ? "calc(100vh - 50px)" : "calc(40vh - 50px)"}
                     darkMode={darkMode} />
