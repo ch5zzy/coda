@@ -1,8 +1,8 @@
 import { MouseEventHandler } from "react"
 import { FaTerminal, FaPlay, FaDownload, FaFileImport, FaHandSparkles, FaStop, FaMoon, FaSun, FaCloudUploadAlt } from "react-icons/fa";
 import { LuLoader2 } from "react-icons/lu";
-import ToolbarButton from "./button";
-import "./toolbar.css";
+import ToolbarButton from "./ToolbarButton";
+import "./Toolbar.css";
 
 export default function Toolbar(props: {
     isReady: boolean,

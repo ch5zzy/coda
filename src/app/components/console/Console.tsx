@@ -1,5 +1,5 @@
 import { useState, KeyboardEvent, FormEvent } from "react";
-import "./console.css";
+import "./Console.css";
 
 export default function Console(props: {
     text: string,

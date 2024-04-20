@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef, use } from "react";
 import CodeMirror from "@uiw/react-codemirror";
-import Console from "./console/console";
-import Toolbar from "./toolbar/toolbar";
+import Console from "./components/console/Console";
+import Toolbar from "./components/toolbar/Toolbar";
 import { python } from "@codemirror/lang-python";
 import { usePython, usePythonConsole } from "react-py";
 import { ConsoleState } from "react-py/dist/types/Console";
@@ -12,24 +12,7 @@ import { xcodeLight } from "@uiw/codemirror-theme-xcode";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-
-interface ReactPy {
-    runPython: (code: string, preamble?: string | undefined) => Promise<void>,
-    stdout: string,
-    stderr: string,
-    isLoading: boolean,
-    isRunning: boolean,
-    isReady: boolean,
-    prompt: string | undefined,
-    isAwaitingInput: boolean,
-    interruptExecution: () => void,
-    sendInput: (value: string) => void
-};
-
-interface ReactPyConsole extends ReactPy {
-    banner: string | undefined,
-    consoleState: ConsoleState | undefined
-};
+import { ReactPy, ReactPyConsole } from "./types/ReactPy";
 
 export default function Editor() {
     const searchParams = useSearchParams();

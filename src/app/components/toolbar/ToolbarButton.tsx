@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-import "./toolbar.css";
+import "./Toolbar.css";
 
 export default function ToolbarButton(props: {
     children: React.ReactNode,
