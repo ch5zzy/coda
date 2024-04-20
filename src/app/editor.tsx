@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import Console from "./components/console/Console";
 import Toolbar from "./components/toolbar/Toolbar";
@@ -18,7 +18,12 @@ export default function Editor() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    const [userCode, setUserCode] = useState("print(\"Hello world!\")");
+    const [userCode, _setUserCode] = useState("print(\"Hello world!\")");
+    const userCodeRef = useRef(userCode);
+    const setUserCode = (data: string) => {
+        _setUserCode(data);
+        userCodeRef.current = data;
+    };
     const [darkMode, setDarkMode] = useState<boolean | undefined>(undefined);
     const [toolbarText, setToolbarText] = useState<string>("");
     const [cloudSaveInProgress, setCloudSaveInProgress] = useState<boolean>(false);
@@ -191,8 +196,8 @@ export default function Editor() {
     async function saveCodeToCloud() {
         setCloudSaveInProgress(true);
 
-        const config: CloudSave = {
-            content: userCode,
+        let config: CloudSave = {
+            content: userCodeRef.current,
             lastSaved: Date.now(),
             version: 1,
             _codaTag: "*"
@@ -210,7 +215,7 @@ export default function Editor() {
         const saveDate = new Date(config.lastSaved).toLocaleString();
         if (response.ok) {
             setToolbarText("Last saved " + saveDate);
-            if (method != "PUT") router.push(`/?id=${await response.headers.get("Location")?.split("/").pop()}`)
+            if (method != "PUT") router.push(`/?id=${response.headers.get("Location")?.split("/").pop()}`)
         } else {
             setToolbarText("Saving failed at " + saveDate);
         }
